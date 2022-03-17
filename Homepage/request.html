@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>MTOR</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <link href="../common/common.css" rel="stylesheet" />
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
+
+
+        <!-- using CDN -->
+        <script src="https://unpkg.com/vue@next"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+
+        <style>
+            .card {
+                height: 100%;
+            }
+
+            #map {
+                height : 400px;
+                width: 100%;;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div>
+       <!-- Navigation-->
+       <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
+        <div class="container px-5">
+            <a class="navbar-brand" href="#" style = "font-weight: bold;"> M  T  O  R </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span><i class="fa fa-circle" id="chatNotif2"></i></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="../Homepage/homepage.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../Tutor/tutorList.html">Tutors</a></li>
+                    <li class="nav-item"><a class="nav-link example">Contact Us </a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+                            <li><a class="dropdown-item" href="#" onclick = "goProfile()">My Profile</a></li>
+                            <li id = "navSchedule"><a class="dropdown-item" href="#" onclick = "goSchedule()">My Schedule</a></li>
+                            <li><a class="dropdown-item" href="../Homepage/request.html">Requests</a></li>
+                            <li><a class="dropdown-item" href="#" onclick = "logout()">Logout</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="../Chat/chat.html">Chats<i class="fa fa-circle" id="chatNotif"></i> </a></li>
+                
+                </ul>
+            </div>
+        </div>
+    </nav>
+        <!-- Page content-->
+        <div class="container-fluid">
+            <div class="text-center mt-5">
+                <h1 class = "mb-3">All Requests</h1>
+                <!-- CHANGED THIS PART -->
+                <div id = "requestinfotutor" class = "text-muted mb-3" style = "display:none">Apply for a tutoring job that suits you!</div>
+                <div id = "requestinfotutee" class = "text-muted mb-3" style = "display:none">Post tutor requests here for tutors to apply!</div>
+                
+                <div id = "newRequestbtn" style = "margin-left:5px; display: none">
+                    <button class = "btn btn-primary" id = "request"> Post New Request </button>
+                </div>
+            </div>
+
+            <div class="row m-5">
+                <!-- Sidebar for filtering-->
+            <!-- my Requests  -->
+            <div class="col-12" id="myRequests" style = "display: none;" >
+                <div class = "row mb-3" v-for = "each in listofrequests">
+                    <div class = "col-12">
+                        <div class="card text-dark bg-light" style="max-width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ each.teachingLevel }} Level  </h5>
+                              <p class="card-text">
+
+                                <div class = "row m-2">
+                                  <div class = "col-md-2 "> <div class = "bg-secondary rounded border border-secondary bg-opacity-10" style = "padding: 7px; padding-left: 20px;">  Subject </div></div>
+                                  <div class = "col-md-10 "> <div class = "bg-secondary rounded bg-opacity-10 text-secondary" style = "padding: 7px; padding-left: 20px;">  {{ each.subject }} </div></div>
+                              </div>
+                              <div class = "row m-2">
+                                <div class = "col-md-2 "> <div class = "bg-secondary rounded border border-secondary bg-opacity-10" style = "padding: 7px; padding-left: 20px;">  Requirements</div></div>
+                                <div class = "col-md-10 "> <div class = "bg-secondary rounded bg-opacity-10 text-secondary" style = "padding: 7px; padding-left: 20px;">  {{ each.requirement }} </div></div>
+                            </div>
+
+                                </p>
+                                  <button class = "btn btn-sm  disabled btn-outline-primary mb-3" style = "font-size: 15px;"> Applicators</button>
+                                    <ul class="list-group mb-2">
+                                        <li  class = "list-group-item" v-for="eachapplicator in each.applied" >  {{ displayDetails(eachapplicator,each.reqID) }} <p style = "margin-bottom: 10px;" :id = "eachapplicator+each.reqID"></p>  <span :id = each.reqID+eachapplicator style = "display:none;"> <button class = "btn-sm btn-success" v-on:click = "viewProfile(eachapplicator)">  View Profile </button> <button class = "btn-sm btn-danger mb-2" v-on:click = "removeApplicator(each.reqID, eachapplicator)">  Remove </button> </span> </li>
+                                      </ul>
+                              
+                              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button class="btn btn-primary me-md-2" type="button" v-on:click = "deleteReq(each.reqID)"> Delete</button>
+                              </div>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted"> Posted on {{ each.date }} </small>
+                              </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <!-- All Requests Via my Teaching Level-->
+            <br>
+
+            <div class="col-12" id="allRequests" style = "display: none;">
+              <div id = "norequest" style = "text-align: center;">
+                <h3>No requests available for you as of now.</h3> 
+             </div>
+                <div class = "row mb-3" v-for = "each in listofrequests">
+                    <div class = "col-12"> 
+                        <div class="card text-dark bg-light" style="max-width: auto;"> {{ hide() }} {{ getLocation(each.location, each.reqID) }}
+                            <div class="card-body">
+                              <h5 class="card-title"> {{ each.teachingLevel }} Level  {{ checkifAppliedAuto(each.reqID) }}</h5>
+                              <p class="card-text">
+             
+                                  <div class = "row m-2">
+                                    <div class = "col-md-2 "> <div class = "bg-secondary rounded border border-secondary bg-opacity-10" style = "padding: 7px; padding-left: 20px;">  Subject </div></div>
+                                    <div class = "col-md-10 "> <div class = "bg-secondary rounded bg-opacity-10 text-secondary" style = "padding: 7px; padding-left: 20px;">  {{ each.subject }} </div></div>
+                                </div>
+                                <div class = "row m-2">
+                                  <div class = "col-md-2 "> <div class = "bg-secondary rounded border border-secondary bg-opacity-10" style = "padding: 7px; padding-left: 20px;">  Requirements</div></div>
+                                  <div class = "col-md-10 "> <div class = "bg-secondary rounded bg-opacity-10 text-secondary" style = "padding: 7px; padding-left: 20px;">  {{ each.requirement }} </div></div>
+                              </div>
+
+                              <div class = "row m-2">
+                                <div class = "col-md-2 "> <div class = "bg-secondary rounded border border-secondary bg-opacity-10" style = "padding: 7px; padding-left: 20px;">  Address </div></div>
+                                <div class = "col-md-10 "> <div :id='each.reqID+streetDummy' class = "bg-secondary rounded bg-opacity-10 text-secondary" style = "padding: 7px; padding-left: 20px;"> </div></div>
+                            </div>
+
+                            <div class = "row m-2">
+                              <div class = "col-md-2 "> <div class = "bg-secondary rounded border border-secondary bg-opacity-10" style = "padding: 7px; padding-left: 20px;">  Distance Away </div></div>
+                              <div class = "col-md-10 "> <div :id='each.reqID+distanceDummy' class = "bg-secondary rounded bg-opacity-10 text-secondary" style = "padding: 7px; padding-left: 20px;"> </div></div>
+                          </div>
+
+                                </p>
+                            
+
+                              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button class="btn btn-primary me-md-2" :id = each.reqID type="button" v-on:click = "checkifApplied(each.reqID)">Apply</button>
+                                <button class="btn btn-danger me-md-2" :id = each.reqID+cancelRequestDummy type="button" v-on:click = "cancelReq(each.reqID)" style = "display:none">Cancel Request</button>
+                              </div>
+
+                    
+
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted"> Posted on {{ each.date }} </small>
+                              </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        <!-- CONTACT US MODAL -->
+                     <div id="myModal" class="modal">    
+                        <div class="modal-content" id = "contactUs"> 
+                          <span class="close" id = "closebutton" onclick="closemodal()" v-on:click = "resetForm">&times;</span>
+                          <div class="text-center mb-5">
+                          <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
+                                          <h1 class="fw-bolder">Get in touch</h1>
+                                          <p class="lead fw-normal text-muted mb-0">We'd love to hear from you</p>
+                          </br>
+                                            <div style = "width: 70%; margin: 0 auto;" >
+              
+                                              <input type="text" class="form-control" v-model="contactusName" placeholder="Name">
+                                            </br> 
+                                              <input type="email" class="form-control" v-model="contactusEmail" placeholder="Enter Email" v-on:keyup = "checkEmail">
+                                              <span style = "color: red; font-size: small;"> {{ Emailalert }} </span>
+                                          </br>
+                                             <input type="text" class="form-control" v-model="contactusPhone" placeholder="Phone Number" v-on:keyup = "checkPhone"> 
+                                             <span style = "color: red; font-size: small;"> {{ Phonealert }} </span>
+                                            </br>
+                                            <textarea class="form-control" v-model="contactusMsg" rows = "6" placeholder="Your Message"> Your Message </textarea>
+                                            <span style = "color: red; font-size: small;"> {{ submitAlert }} </span>
+                                          </br>
+                                          <button class="btn btn-primary btn-md" type="submit" v-on:click = "submitContactUs">Submit</button>
+                                          </div>
+              
+                        </div>
+                        </div>
+                      
+                      </div>
+
+        <!-- NEW REQUEST MODAL -->
+        <div id="reqModal" class="modal">    
+            <div class="modal-content" id = "request"> 
+              <span class="close" id = "reqclosebutton" onclick="closemodal()" v-on:click="resetForm2">&times;</span>
+              <div class="text-center mb-5">
+              </br>
+            </br>
+                              <h1 class="fw-bolder">Post New Request</h1>
+                              
+              </br>
+                                <div style = "width: 70%; margin: 0 auto;" >
+                                    <div class="input-group mb-3">
+                                        <label class="input-group-text" for="inputGroupSelect01">Teaching Level</label>
+                                        <select class="form-select" id="inputGroupSelect01" v-model = "reqTeachingLevel">
+                                          <option v-for="level in availableLevels"> {{ level }} </option>
+                                        </select>
+                                      </div>
+
+                                      <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">Subject</span>
+                                        <input type="text" class="form-control" v-model = "reqSubject" aria-describedby="basic-addon1">  <!-- keep in view -->
+                                      </div>
+                                      <p style = "color: red; font-size: small;"> {{ reqSubjectAlert }} </p>
+
+                                      <div class="input-group">
+                                        <span class="input-group-text">Other Requirements</span>
+                                        <textarea rows = "6" class="form-control" aria-label="With textarea" v-model = "reqRequirements">  </textarea>
+                                      </div>
+                                    </br>
+                                    <p style = "color:Red; font-size: small;" > {{ reqSubmitAlert }} </p>
+                                    <button class="mb-2 btn btn-primary btn-md" type="submit" v-on:click = "submitRequest">Submit</button>
+                              </div>
+  
+            </div>
+            </div>
+          
+          </div>
+
+
+                <!-- This demo uses Version 8; the latest version is Version 9 -->
+                <!-- The core Firebase JS SDK is always required and must be listed first -->
+                <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+                <!-- This is the API from Firebase Realtime Database -->
+                <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+                <script>
+
+                      window.sessionStorage;
+                      var currentUser = sessionStorage.getItem("userID"); 
+                      var userType = sessionStorage.getItem("userType");
+                      var userID = sessionStorage.getItem("userID"); 
+                    
+                    // Your web app's Firebase configuration
+                    // You can find yours at Firebase : Project Overview : Project Settings
+                    const firebaseConfig = {
+                        apiKey: "AIzaSyBee5mbaSxk1JnnIHlkZxx4bwdtP0HY5g0",
+                        authDomain: "wad-mtor.firebaseapp.com",
+                        databaseURL: "https://wad-mtor-default-rtdb.asia-southeast1.firebasedatabase.app",
+                        projectId: "wad-mtor",
+                        storageBucket: "wad-mtor.appspot.com",
+                        messagingSenderId: "908590207014",
+                        appId: "1:908590207014:web:f1b1ab657d1a2bffe296e7"
+                        };
+                    // Initialize Firebase
+                    firebase.initializeApp(firebaseConfig);
+                    
+                    if(userID != null){
+                      checkIfUser(userID);
+                    }
+                    else{
+                      window.location.href = "homepage_no_login.html";
+                    }
+
+                    function checkIfUser(userID){
+                      userDB = firebase.database().ref("users");
+                      userDB.child(userID).get().then((snapshot)=>{
+                        if(snapshot.exists()){
+                          if(userType == "Tutee"){
+                            document.getElementById("newRequestbtn").style.display = "block";
+                            document.getElementById("myRequests").style.display = "block";
+                            document.getElementById("navSchedule").style.display = "none";
+                            document.getElementById("requestinfotutee").style.display = "block"
+                        }
+                          else{
+                              document.getElementById("newRequestbtn").style.display = "none";
+                              document.getElementById("myRequests").style.display = "none";
+                              document.getElementById("allRequests").style.display = "block";
+                              document.getElementById("requestinfotutor").style.display = "block"
+                          }
+                        }
+                        else{
+                          if(window.confirm("Please complete your registration first")){
+                                window.location.href = "../Login/SignUp1.html";
+                            }
+                        }
+                      }
+                      )
+                    }
+
+
+                    
+                
+                </script>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="scripts.js"></script>
+        <script src="../common/common.js"></script>
+        <script>
+          getChatNotif();
+
+        </script>
+    </body>
+</html>

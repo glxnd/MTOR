@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>MTOR</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="../common/common.css" rel="stylesheet" />
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
+
+
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- using CDN -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+    <style>
+        .card {
+            height: 100%;
+        }
+
+        .img-fluid {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
+
+        .img-background {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 92% 110%;
+        }
+
+        #myBtn {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            bottom: 40px;
+            background-color: #345ed1;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            border: none;
+            box-shadow: 3px 4px 3px #999;
+            right: 80px;
+            z-index: 100;
+        }
+
+        #myBtn:hover {
+            background-color: #24376b;
+        }
+
+        .whats-app {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            bottom: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 3px 4px 3px #999;
+            right: 15px;
+            z-index: 100;
+        }
+
+        .my-float {
+            margin-top: 10px;
+        }
+
+
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%;
+            /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .linknormal {
+            color: inherit;
+            text-decoration: inherit;
+        }
+
+        .linknormal:hover {
+            color: darkblue;
+        }
+    </style>
+
+    <script>
+        
+        var currentUser = sessionStorage.getItem("userID");
+        var userType = sessionStorage.getItem("userType");
+        if (currentUser != null) {
+
+        }
+        else {
+            sessionStorage.setItem("userType", "none")
+        }
+
+    </script>
+</head>
+
+<body>
+    <button onclick="topFunction()" id="myBtn" class="" title="Go to top"><i class="fa fa-angle-double-up"></i></button>
+    
+    <!-- Navigation-->
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="noLoginNav" style="display: none;">
+        <div class="container px-5">
+            <a class="navbar-brand" href="#" style="font-weight: bold;"> M T O R </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="../Homepage/homepage_no_login.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../Tutor/tutorList.html">Tutors</a></li>
+                    <li class="nav-item"><a class="nav-link example">Contact Us </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="loginNav" stye="display:none;">
+        <div class="container px-5">
+            <a class="navbar-brand" href="#" style="font-weight: bold;"> M T O R </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span><i class="fa fa-circle"
+                    id="chatNotif2"></i></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="../Homepage/homepage.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../Tutor/tutorList.html">Tutors</a></li>
+                    <li class="nav-item"><a class="nav-link example">Contact Us </a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+                            <li><a class="dropdown-item" href="#" onclick="goProfile()">My Profile</a></li>
+                            <li id="navSchedule"><a class="dropdown-item" href="#" onclick="goSchedule()">My
+                                    Schedule</a></li>
+                            <li><a class="dropdown-item" href="../Homepage/request.html">Requests</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="../Chat/chat.html">Chats<i class="fa fa-circle"
+                                id="chatNotif"></i> </a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content" id="contactUs">
+            <span class="close" id="closebutton" onclick="closemodal()">&times;</span>
+            <div class="text-center mb-5">
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i>
+                </div>
+                <h1 class="fw-bolder">Get in touch</h1>
+                <p class="lead fw-normal text-muted mb-0">We'd love to hear from you</p>
+                </br>
+                <div style="width: 70%; margin: 0 auto;">
+
+                    <input type="text" class="form-control" v-model="contactusName" placeholder="Name">
+                    </br>
+                    <input type="email" class="form-control" v-model="contactusEmail" placeholder="Enter Email"
+                        v-on:keyup="checkEmail">
+                    <span style="color: red; font-size: small;"> {{ Emailalert }} </span>
+                    </br>
+                    <input type="text" class="form-control" v-model="contactusPhone" placeholder="Phone Number"
+                        v-on:keyup="checkPhone">
+                    <span style="color: red; font-size: small;"> {{ Phonealert }} </span>
+                    </br>
+                    <textarea class="form-control" v-model="contactusMsg" rows="6"
+                        placeholder="Your Message"> Your Message </textarea>
+                    <span style="color: red; font-size: small;"> {{ submitAlert }} </span>
+                    </br>
+                    <button class="btn btn-primary btn-md" type="submit" v-on:click="submitContactUs">Submit</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- Page content-->
+    <div class="container-fluid">
+        <div class="text-center mt-5">
+            <div>
+                <h1>Our Tutors</h1>
+                <p class="lead">How Learning Hits Home</p></img>
+            </div>
+        </div>
+
+        <div id="appp">
+            <div class="row m-5">
+                <!-- Sidebar for filtering-->
+                <div id="sidebar" class="col-sm-3 bg-light position-sticky">
+                    <div>
+                        <h6 class="p-1 border-bottom fw-bold">Subject</h6>
+                        <div class="form-group">
+                            <input type="text" class="form-control border border-primary" v-model="searchText"
+                                placeholder="Search Name/Subject...">
+                        </div>
+                    </div>
+                    <div>
+                        <a href="#" class="float-end" @click="clear">Reset</a>
+                        <h6 class="p-1 mt-3 fw-bold">Filter By</h6>
+                        <hr>
+                        <p class="fw-bold">Price</p>
+                        <div class="d-grid gap-2 col-12 mx-auto"><input class="btn-check" autocomplete="off"
+                                type="radio" id="radio1" name="priceFil" v-bind:value="a" v-model="priceFilter"><label
+                                class="btn btn-outline-primary" for="radio1">Below $10 per hour</label></div>
+                        <div class="d-grid gap-2 col-12 mx-auto"><input class="btn-check" autocomplete="off"
+                                type="radio" id="radio2" name="priceFil" v-bind:value="b" v-model="priceFilter"><label
+                                class="btn btn-outline-primary" for="radio2">$10 to $20 per hour</label></div>
+                        <div class="d-grid gap-2 col-12 mx-auto"><input class="btn-check" autocomplete="off"
+                                type="radio" id="radio3" name="priceFil" v-bind:value="c" v-model="priceFilter"><label
+                                class="btn btn-outline-primary" for="radio3">$20 to $30 per hour</label></div>
+                        <div class="d-grid gap-2 col-12 mx-auto"><input class="btn-check" autocomplete="off"
+                                type="radio" id="radio4" name="priceFil" v-bind:value="d" v-model="priceFilter"><label
+                                class="btn btn-outline-primary" for="radio4">$30 to $40 per hour</label></div>
+                    </div>
+                    <hr>
+                    <div>
+                        <p class="fw-bold">Teaching Level</p>
+                        <div class="d-grid gap-2 col-12 mx-auto"><input class="btn-check" autocomplete="off"
+                                type="radio" id="radio5" name="teachingFil" value="Primary"
+                                v-model="teachingFilter"><label class="btn btn-outline-primary"
+                                for="radio5">Primary</label></div>
+                        <div class="d-grid gap-2 col-12 mx-auto"><input class="btn-check" autocomplete="off"
+                                type="radio" id="radio6" name="teachingFil" value="Secondary"
+                                v-model="teachingFilter"><label class="btn btn-outline-primary"
+                                for="radio6">Secondary</label></div>
+                        <div class="d-grid gap-2 col-12 mx-auto"><input class="btn-check" autocomplete="off"
+                                type="radio" id="radio7" name="teachingFil" value="Tertiary"
+                                v-model="teachingFilter"><label class="btn btn-outline-primary"
+                                for="radio7">Tertiary</label></div>
+                    </div>
+                    <hr>
+                    <div>
+                        <p class="fw-bold">Subject</p>
+                        <div class="d-grid gap-2 col-12 mx-auto"><input class="btn-check" autocomplete="off"
+                                type="radio" id="radio8" name="subFil" value="English" v-model="subFilter"><label
+                                class="btn btn-outline-primary" for="radio8">English</label></div>
+                        <div class="d-grid gap-2 col-12 mx-auto"><input class="btn-check" autocomplete="off"
+                                type="radio" id="radio9" name="subFil" value="Math" v-model="subFilter"><label
+                                class="btn btn-outline-primary" for="radio9">Math</label></div>
+                        <div class="d-grid gap-2 col-12 mx-auto"><input class="btn-check" autocomplete="off"
+                                type="radio" id="radio10" name="subFil" value="Science" v-model="subFilter"><label
+                                class="btn btn-outline-primary" for="radio10">Science</label></div>
+                    </div>
+                </div>
+
+                <!-- Main content section -->
+                <div class="col-sm-9">
+                    <div class="row">
+                        <!-- row cards -->
+                        <div class="card-group">
+                            <tutor-list class="col-md-3"
+                                v-if="priceFilter != '' || teachingFilter != '' || subFilter != ''"
+                                v-for='tutor in displayFilteredTutors' v-bind:tutor='tutor' v-on:book='bookCalendar'
+                                v-on:chat='chatWithTutor' v-bind:usertype='uType'></tutor-list>
+                            <tutor-list class="col-md-3" v-else-if="filteredSubject != ''"
+                                v-for='tutor in filteredSubject' v-bind:key='tutor.uid' v-bind:tutor='tutor'
+                                v-on:book='bookCalendar' v-on:chat='chatWithTutor' v-bind:usertype='uType'></tutor-list>
+                            <tutor-list class="col-md-3" v-else v-for='tutor in tutors' v-bind:key='tutor.uid'
+                                v-bind:tutor='tutor' v-on:book='bookCalendar' v-on:chat='chatWithTutor'
+                                v-bind:usertype='uType'></tutor-list>
+                        </div>
+
+                    </div>
+                </div><!-- row cards -->
+            </div>
+        </div>
+
+
+
+
+
+        <!-- This demo uses Version 8; the latest version is Version 9 -->
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+        <!-- This is the API from Firebase Realtime Database -->
+        <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-storage.js"></script>
+        <script>
+            // Your web app's Firebase configuration
+            // You can find yours at Firebase : Project Overview : Project Settings
+            var firebaseConfig = {
+                apiKey: "AIzaSyBee5mbaSxk1JnnIHlkZxx4bwdtP0HY5g0",
+                authDomain: "wad-mtor.firebaseapp.com",
+                databaseURL: "https://wad-mtor-default-rtdb.asia-southeast1.firebasedatabase.app",
+                projectId: "wad-mtor",
+                storageBucket: "wad-mtor.appspot.com",
+                messagingSenderId: "908590207014",
+                appId: "1:908590207014:web:f1b1ab657d1a2bffe296e7"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+        </script>
+
+        <script src="https://unpkg.com/vue@next"></script>
+        <script>
+            const appp = Vue.createApp({
+                data() {
+                    return {
+                        tutors: [], // array of tutors objects
+                        searchText: '',
+                        priceFilter: '',
+                        a: 10,
+                        b: 20,
+                        c: 30,
+                        d: 40,
+                        teachingFilter: '',
+                        subFilter: '',
+                        filteredTutor: [],
+                        uType: sessionStorage.getItem("userType")
+                    }
+                },
+                methods: {
+                    getAllTutors() {
+                        const self = this;
+                        self.tutors = []
+                        firebase.database().ref("users").once('value', function (snapshot) {
+                            for (const userId in snapshot.val()) {
+                                if (Object.hasOwnProperty.call(snapshot.val(), userId)) {
+                                    const userProps = snapshot.val()[userId];
+                                    let name = userProps.name;
+                                    let rating = userProps.rating; //may be remove
+                                    let subjects = userProps.subjects;
+                                    let rate = userProps.rate;
+                                    let calendar = userProps.calendar;
+                                    let teachingLevel = userProps.teachingLevel;
+                                    let userType = userProps.userType;
+                                    if (userType == "Tutor") {
+                                        const profile1 = firebase.storage().ref().child("profile");
+                                        profile1
+                                            .child(userId + ".jpg")
+                                            .getDownloadURL()
+                                            .then((url) => {
+                                                self.tutors.push({ "uid": userId, "name": name, "rating": rating, "imgUrl": url, "subjects": subjects, "rate": rate, "calendar": calendar, "teachingLevel": teachingLevel });
+                                            })
+                                            .catch((error) =>{
+                                                url = "https://firebasestorage.googleapis.com/v0/b/wad-mtor.appspot.com/o/profile%2Fdefault.png?alt=media&token=baee6522-1577-455c-848a-7c07609b3063";
+                                                self.tutors.push({ "uid": userId, "name": name, "rating": rating, "imgUrl": url, "subjects": subjects, "rate": rate, "calendar": calendar, "teachingLevel": teachingLevel });
+                                            })
+                                    }
+                                }
+                            }
+                        });
+                    },
+                    bookCalendar(cal) {
+                        window.open(cal);
+                    },
+                    chatWithTutor(id) {
+                        console.log(id)
+                        sessionStorage.setItem("toId", id)
+                        // window.location.replace("../Chat/public/chat.html");
+                        window.location.href = "../Chat/chat.html";
+                    },
+                    clear() {
+                        const self = this;
+                        self.priceFilter = '';
+                        self.teachingFilter = '';
+                        self.subFilter = '';
+                    }
+                },
+                created() {
+                    this.getAllTutors()
+                },
+                computed: {
+                    filteredSubject() {
+                        const self = this;
+                        if (this.searchText) {
+                            return this.tutors.filter(function (tutor) {
+                                var flag = false;
+                                // console.log(tutor);
+                                if (tutor.name.toLowerCase().indexOf(self.searchText.toLowerCase()) >= 0) {
+                                    return true;
+                                }
+                                tutor.subjects.forEach((value, index) => {
+                                    if (value.toLowerCase().includes(self.searchText.toLowerCase())) {
+                                        flag = true;
+                                    }
+                                });
+                                return flag;
+                            });
+
+                        } else {
+                            return this.tutors;
+                        }
+                    },
+                    displayFilteredTutors() {
+                        const self = this;
+                        this.filteredTutor = [];
+
+                        for (tutor of self.tutors) {
+                            console.log(tutor.name);
+                            console.log(tutor, self.priceFilter);
+                            if (self.priceFilter != '' && self.teachingFilter == '' && self.subFilter == '') {
+                                if ((tutor.rate >= parseInt(self.priceFilter) - 10) && (tutor.rate < (parseInt(self.priceFilter)))) {
+                                    self.filteredTutor.push(tutor)
+                                }
+                                console.log(this.filteredTutor)
+                            }
+                            else if (self.priceFilter == '' && self.teachingFilter != '' && self.subFilter == '') {
+                                if (tutor.teachingLevel == self.teachingFilter) {
+                                    self.filteredTutor.push(tutor)
+                                }
+                                console.log(this.filteredTutor)
+                            }
+                            else if (self.priceFilter == '' && self.teachingFilter == '' && self.subFilter != '') {
+                                if (tutor.subjects.includes(self.subFilter)) {
+                                    self.filteredTutor.push(tutor)
+                                }
+                                console.log(this.filteredTutor)
+                            }
+                            else if (self.priceFilter != '' && self.teachingFilter != '' && self.subFilter == '') {
+                                if ((tutor.rate >= parseInt(self.priceFilter) - 10) && (tutor.rate < (parseInt(self.priceFilter))) && tutor.teachingLevel == self.teachingFilter) {
+                                    self.filteredTutor.push(tutor)
+                                }
+                                console.log(this.filteredTutor)
+                            }
+                            else if (self.priceFilter != '' && self.teachingFilter == '' && self.subFilter != '') {
+                                if ((tutor.rate >= parseInt(self.priceFilter) - 10) && (tutor.rate < (parseInt(self.priceFilter))) && tutor.subjects.includes(self.subFilter)) {
+                                    self.filteredTutor.push(tutor)
+                                }
+                                console.log(this.filteredTutor)
+                            }
+                            else if (self.priceFilter == '' && self.teachingFilter != '' && self.subFilter != '') {
+                                if (tutor.teachingLevel == self.teachingFilter && tutor.subjects.includes(self.subFilter)) {
+                                    self.filteredTutor.push(tutor)
+                                }
+                                console.log(this.filteredTutor)
+                            }
+                            else {
+                                if ((tutor.rate >= parseInt(self.priceFilter) - 10) && (tutor.rate < (parseInt(self.priceFilter))) && tutor.teachingLevel == self.teachingFilter && tutor.subjects.includes(self.subFilter)) {
+                                    self.filteredTutor.push(tutor)
+                                }
+                                console.log(this.filteredTutor)
+                            }
+
+                        } return this.filteredTutor
+                    }
+                }
+            })
+            appp.component('tutor-list', {
+                props: ['tutor', 'usertype'],
+                methods: {
+                    viewProfile(uid) {
+                        sessionStorage.setItem("profileID", uid)
+                        window.location.href = "../Profile/teacher_profile.html";
+                    },
+                    alertLogin() {
+                        alert("Register with us first to book and chat with our tutors!")
+                    }
+                },
+                template: `
+                        <div class="col-sm-6 mx-auto">
+                            <div class="card ms-6 mb-6" >
+                                    <img v-bind:src="tutor.imgUrl" class="img-fluid" v-on:click = 'viewProfile(tutor.uid)'>
+                            
+                                <div class="card-body" v-on:click = 'viewProfile(tutor.uid)'>
+                                    <a href="#" class="pe-auto linknormal" title = "Click to view complete profile">
+                                    <p class="card-text">
+                                        <p><span class="fw-bold text-primary">Name: </span>{{ tutor.name }}</p>
+                                        <p><span class="fw-bold text-primary">Teaching Level: </span>{{ tutor.teachingLevel }}</p>
+                                        <p><span class="fw-bold text-primary">Subject: </span>{{ tutor.subjects.join(", ") }} &nbsp</p>
+                                        <p><span class="fw-bold text-primary">Rate: </span>$ {{tutor.rate}} per hour</p>
+                                    </p>
+                                </a>
+                                </div>
+        
+                                <div class="card-footer bg-transparent">
+                                    <div class="row justify-content-end gap-2">
+                                        <button v-if="usertype=='Tutor'" type="button" class="col btn btn-primary" v-on:click="$emit('book', tutor.calendar)" disabled>Book</button>
+                                        <button v-else-if="usertype=='none'" type = "button" class="col btn btn-primary" v-on:click="alertLogin">Book</button>
+                                        <button v-else type="button" class="col btn btn-primary" v-on:click="$emit('book', tutor.calendar)">Book</button>
+                                        <button v-if="usertype == 'Tutor'" type="button" class="col btn btn-primary" v-on:click="$emit('chat', tutor.uid)" disabled>Chat</button>
+                                        <button v-else-if="usertype == 'none'" type="button" class="col btn btn-primary" v-on:click="alertLogin">Chat</button>
+                                        <button v-else type="button" class="col btn btn-primary" v-on:click="$emit('chat', tutor.uid)" >Chat</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `
+            })
+            //<a href="#" class="pe-auto"> need to link to user profile
+            const vm = appp.mount('#appp')
+
+
+        </script>
+    </div>
+    </div>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <script src="../common/common.js"></script>
+    <script>
+        function checkIfUser(userID) {
+            userDB = firebase.database().ref("users");
+            userDB.child(userID).get().then((snapshot) => {
+                if (snapshot.exists()) {
+                    document.getElementById("noLoginNav").style.display = "none";
+                    document.getElementById("loginNav").style.display = "block";
+                    if (sessionStorage.getItem("userType") == "Tutee") {
+                        document.getElementById("navSchedule").style.display = "none";
+                    }
+                }
+                else {
+                    if (window.confirm("Please complete your registration first")) {
+                        window.location.href = "../Login/SignUp1.html";
+                    }
+                }
+            }
+            )
+        }
+
+
+        var mybutton = document.getElementById("myBtn");
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            }
+            else {
+                mybutton.style.display = "none";
+            }
+        }
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+    <script>
+        getChatNotif();
+
+        if (currentUser != null) {
+            checkIfUser(currentUser)
+        }
+        else { 
+            document.getElementById("noLoginNav").style.display = "block";
+            document.getElementById("loginNav").style.display = "none";
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+#chatNotif{
+    position:relative;
+    top: -10px;
+    font-size: 10px;
+    color: #da1222;
+    display: none;
+}
+
+#chatNotif2{
+    position: absolute;
+    top:10px;
+    font-size: 10px;
+    color: #da1222;
+    display: none;
+}
