@@ -15,3 +15,4 @@ Note:
 3.	If the website were to stop working such as: not able to view tutors profile pictures, cannot get user data, cannot get chat data, etc. That would be due to expiration of firebase storage and database authorisation for security reasons. Do contact us if this occur and we renew it from our side. It would take 5 to 10 mins for the authorisation changes to apply. 
 4.	Do note that the code will only run as expected form the following authorised domains:
  
+![image](https://user-images.githubusercontent.com/80815026/190560719-b9c5fd00-736b-43f0-b926-65a8d92010b6.png)
